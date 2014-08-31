@@ -7,7 +7,9 @@
 * Installation : 
 ```
 git clone https://github.com/martialdidit/Ipsum.git
-cd Ipsum/public
+cd Ipsum
+composet install
+cd public
 bower install --allow-root
 ```
 
@@ -64,11 +66,16 @@ bower install --allow-root
    Change with your informations : 
  
   ```
-  $host = "name of the host";
-  $dbname = "name of the database (ispum)";
-  $user = "user";
-  $password = "password";
+$host = "localhost";
+$dbname = "name of the database";
+$user = "user";
+$password = "password";
+$userMail = "the mail of the network"; //ipsum will send you a mail when a channel accept the contract to join your network
+$passwordMail = "password"; //password of the mail
+  
  ```
+ 
+If you don't recieve a mail, check the [wiki](https://github.com/martialdidit/Ipsum/wiki)
 
 ### Difficult part : Allow connection with Google
 
@@ -122,7 +129,7 @@ Alias /ipsum/ "path/Ipsum/public/"
 
 ```
 ServerName apply.domain.com 
-
+DocumentRoot "path/Ipsum/public/"
 <Directory "path/Ipsum/public/">
     Options Indexes FollowSymLinks MultiViews
     AllowOverride all
