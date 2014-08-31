@@ -5,6 +5,7 @@ app.controller('ChannelCtrl', ['$scope', 'googleService', 'shareProperty', '$htt
         $scope.network = {};
         $scope.error = {};
         $scope.url = 'server.php';
+        $scope.loading = false;
 
         $scope.login = function () {
             googleService.handleAuthResult().then(function (data) {
@@ -41,12 +42,15 @@ app.controller('ChannelCtrl', ['$scope', 'googleService', 'shareProperty', '$htt
             
         $scope.saveUser = function () {
             $scope.user.contract = true;
-    
+            $scope.loading = true;
+
             $http.post($scope.url, { "data" : $scope.user }).success(function(data, status) {
-                $scope.step.three = true;   
+                $scope.step.three = true;
+                $scope.loading = false
             }).error(function(data, status) {
                 $scope.error.mysql = true;
-                $scope.error.message = data;  
+                $scope.error.message = data;
+                $scope.loading = false  
             });
         };
 

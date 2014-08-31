@@ -1,5 +1,7 @@
 <?php 
     require_once 'config.php';
+    require 'vendor/autoload.php';
+
 
     $data = file_get_contents("php://input");
 
@@ -64,6 +66,38 @@
                 $insert = $DB->prepare($queryInsert);
                 $insert->execute(array($name,$YouTube,$email,$skype,$analytics,$contract,$view,$subscriber));
             }
+
+            $mail = new PHPMailer;
+
+            //$mail->SMTPDebug = 3;                               // Enable verbose debug output
+
+            $mail->isSMTP();                                      // Set mailer to use SMTP
+            $mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
+            $mail->SMTPAuth = true;                               // Enable SMTP authentication
+            $mail->Username = $userMail;                 // SMTP username
+            $mail->Password = $passwordMail;                           // SMTP password
+            $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
+            $mail->Port = 587;                                    // TCP port to connect to
+
+            $mail->FromName = 'Mailer';
+            $mail->addAddress($userMail, 'Joe User');     // Add a recipient 
+
+            $mail->isHTML(true);                                  // Set email format to HTML
+
+            $mail->Subject = 'A new channel want to join your network';
+            $mail->Body    = 'The channel <a href='.$YouTube.'>'.$name.'</a> want to join your network.
+                                <br /><br />Skype: '.$skype.'
+                                <br /><br />Analytics: '.number_format($analytics,0, ',', ' ').'
+                                <br /><br />View: '.number_format($view,0, ',', ' ').'
+                                <br /><br />Subscriber: '.number_format($subscriber,0, ',', ' ').'';
+
+            if(!$mail->send()) {
+                echo 'Message could not be sent.';
+                echo 'Mailer Error: ' . $mail->ErrorInfo;
+            } else {
+                echo 'Message has been sent';
+            }
+
         } catch(PDOException $e) {
             echo 'ERROR save: ' . $e->getMessage();
             http_response_code(500);

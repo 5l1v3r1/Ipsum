@@ -11,5 +11,8 @@
    TEXT_ACCEPT 
 </p>
 <div class="col-lg-12 text-center">
-    <a class="btn btn-primary" ng-click="saveUser();"> {{ 'ACCEPT' | translate }}</a> 
+    <a class="btn btn-primary" ng-click="saveUser();" ng-disabled="loading">
+        <span ng-hide="loading">{{ 'ACCEPT' | translate }}</span>
+        <span ng-show="loading">Loading....</span>
+    </a> 
 </div>
