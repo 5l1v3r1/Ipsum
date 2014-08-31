@@ -1,5 +1,4 @@
 <?php 
-
     require_once 'config.php';
 
     $data = file_get_contents("php://input");
@@ -19,7 +18,7 @@
                     break;
                 case 'YouTube':
                     $YouTube = $val;
-                    break;   
+                    break;
                 case 'email':
                     $email = $val;
                     break;
@@ -31,18 +30,17 @@
                     break; 
                 case 'subscriber':
                     $subscriber = $val;
-                    break;  
+                    break;
                 case 'skype':
                     $skype = $val;
                     break;  
                 case 'connect':
-                    break;                              
+                    break;
                 default:
                     return;
             }
         }
     }
-
 
     if(!empty($contract) && !empty($name) && !empty($YouTube) && !empty($email) && !empty($analytics) && !empty($view) && !empty($subscriber) && !empty($skype)) {
 
@@ -50,7 +48,7 @@
             $DB = new PDO('mysql:host='.$host.';dbname='.$dbname.'',$user,$password);
             $DB->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch(PDOException $e) {
-            $error = 'ERROR: ' . $e->getMessage();
+            echo 'ERROR pdo: ' . $e->getMessage();
             http_response_code(500);
             exit;
         }
@@ -67,11 +65,15 @@
                 $insert->execute(array($name,$YouTube,$email,$skype,$analytics,$contract,$view,$subscriber));
             }
         } catch(PDOException $e) {
-            $error = 'ERROR pdo: ' . $e->getMessage();
+            echo 'ERROR save: ' . $e->getMessage();
             http_response_code(500);
             exit;
         }
 
+    } else {
+        echo 'ERROR something went wrong';
+        http_response_code(500);
+        exit;
     }
 
 
